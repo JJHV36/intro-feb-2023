@@ -1,14 +1,41 @@
 ﻿using Finger;
+using Marten;
 
-System.Console.WriteLine("What is your status: ");
-string? status = Console.ReadLine();
-// Type identifier = new Constructor
-if(status != null) 
+var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = "host=localhost;database=status_dev;password=TokyoJoe138!;username=postgres;port=5432";
+
+builder.Services.AddMarten(options =>
 {
-    StatusMessage myStatus = new StatusMessage(status, DateTimeOffset.Now);
-    Console.WriteLine($"You said your status was {myStatus.Status} at {myStatus.When:T}");
-}
-else 
+    options.Connection(connectionString);
+    if (builder.Environment.IsDevelopment())
+    {
+        options.AutoCreateSchemaObjects = Weasel.Core.AutoCreate.All;
+    }
+});
+
+var app = builder.Build();
+
+app.MapGet("/status", async (IDocumentSession doc) =>
 {
-    Console.WriteLine("Sorry, cannout have a null status");
-}
+    var results = await doc.Query<StatusMessage>()
+    .OrderByDescending(m => m.When)
+    .FirstOrDefaultAsync();
+    if(results != null) {
+        return Results.Ok(results);
+    } else {
+        return Results.NotFound();
+    }
+});
+
+app.MapPost("/status", async (StatusRequest req, IDocumentSession doc) =>
+{
+    var messageToSave = new StatusMessage(Guid.NewGuid(), req.Message, DateTimeOffset.Now);
+    doc.Store<StatusMessage>(messageToSave);
+    await doc.SaveChangesAsync();
+    return messageToSave;
+});
+
+app.Run(); // blocking call
+
+public record StatusRequest(string Message);
