@@ -19,6 +19,10 @@ public class BankAccount
         {
             _balance -= amountToWithdraw;
         }
+        else
+        {
+            throw new AccountOverdraftException();
+        }
     }
 
     // "Never type private, always refactor to it." -Corey Haines
