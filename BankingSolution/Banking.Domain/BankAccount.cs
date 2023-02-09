@@ -5,7 +5,17 @@ public class BankAccount
     private decimal _balance = 5000M; // State - "Fields" variable.
     public void Deposit(decimal amountToDeposit)
     {
-        _balance += amountToDeposit;
+        var bonus = 0M;
+        if(_balance >= 5000 && IsDuringBusinessHours())
+        {
+            bonus = amountToDeposit * 1.10M;
+        }
+        _balance += amountToDeposit + bonus;
+    }
+
+    private bool IsDuringBusinessHours()
+    {
+        return DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 16; // bogus but good enough for now
     }
 
     public decimal GetBalance()
