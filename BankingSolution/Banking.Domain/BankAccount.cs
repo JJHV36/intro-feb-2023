@@ -8,7 +8,7 @@ public class BankAccount
         var bonus = 0M;
         if(_balance >= 5000 && IsDuringBusinessHours())
         {
-            bonus = amountToDeposit * 1.10M;
+            bonus = amountToDeposit * 0.10M;
         }
         _balance += amountToDeposit + bonus;
     }
