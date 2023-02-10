@@ -3,29 +3,32 @@ namespace StringCalculator;
 
 public class StringCalculator
 {
+    private ILogger _logger;
+    public StringCalculator(ILogger logger)
+    {
+        _logger = logger;
+    }
 
     public int Add(string numbers)
     {
-        if(numbers == "")
+        int answer = 0;
+        if (numbers == "")
         {
-            return 0;
-        }
-
-        string[] nums = numbers.Split(',', '\n');
-        if (nums.Length == 1)
-        {
-            return int.Parse(nums[0]);
+            answer = 0;
         }
         else
         {
-            int sum = 0;
-            int numberAsInt = 0;
-            for(int i = 0; i < nums.Length; i++)
-            {
-                numberAsInt= int.Parse(nums[i]);
-                sum += numberAsInt;
-            }
-            return sum;
+            answer = numbers.Split(',', '\n')
+            .Select(int.Parse)
+            .Sum();
         }
+        // WTCYWYH
+        _logger.Write(answer.ToString());
+        return answer;
     }
+}
+
+public interface ILogger
+{
+    void Write(string message);
 }

@@ -1,12 +1,20 @@
 ﻿
+using Moq;
+
 namespace StringCalculator;
 
 public class StringCalculatorTests
 {
+    private StringCalculator calculator;
+
+    public StringCalculatorTests()
+    {
+        calculator = new StringCalculator(new Mock<ILogger>().Object);
+    }
+
     [Fact]
     public void EmptyStringReturnsZero()
     {
-        var calculator = new StringCalculator();
 
         var result = calculator.Add("");
 
@@ -18,9 +26,7 @@ public class StringCalculatorTests
     [InlineData("1", 1)]
     [InlineData("10", 10)]
     public void SingleDigit(string numbers, int expected)
-    {
-        var calculator = new StringCalculator();
-
+    { 
         var result = calculator.Add(numbers);
         Assert.Equal(expected, result);
     }
@@ -31,7 +37,6 @@ public class StringCalculatorTests
     [InlineData("1\n2,3", 6)]
     public void MultipleDigits(string numbers, int expected)
     {
-        var calculator = new StringCalculator();
         var result = calculator.Add(numbers);
         Assert.Equal(expected, result);
     }
