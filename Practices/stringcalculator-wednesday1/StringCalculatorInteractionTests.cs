@@ -1,4 +1,6 @@
 ﻿using Moq;
+using System.Dynamic;
+
 namespace StringCalculator;
 
 public class StringCalculatorInteractionTests
@@ -11,7 +13,8 @@ public class StringCalculatorInteractionTests
     {
         // Given
         var mockedLogger = new Mock<ILogger>();
-        var calculator = new StringCalculator(mockedLogger.Object); // NEED SOMETHING HERE
+        var mockedWebService = new Mock<IWebService>();
+        var calculator = new StringCalculator(mockedLogger.Object, mockedWebService.Object); // NEED SOMETHING HERE
 
         // When
         calculator.Add(numbers);
@@ -19,5 +22,25 @@ public class StringCalculatorInteractionTests
         // Then
         // I need to verify (assert) that the logger was called with the expected value!
         mockedLogger.Verify(logger => logger.Write(expected), Times.Once);
+        mockedWebService.Verify(ws => ws.NotifyOfFailedLogging(It.IsAny<string>()), Times.Never);
+    }
+
+    [Theory]
+    [InlineData("Blammo!")]
+    [InlineData("Taco Bell")]
+    public void WhenLoggerBlowsUpTheWebServiceIsCalled(string expected)
+    {
+        // Given
+        var stubbedLogger = new Mock<ILogger>();
+        stubbedLogger.Setup(m => m.Write(It.IsAny<string>())).Throws(new LoggerException(expected));
+        var mockedWebService = new Mock<IWebService>();
+        var calculator = new StringCalculator(stubbedLogger.Object, mockedWebService.Object);
+
+        // When
+        calculator.Add("1");
+
+        // then
+        // ?? The web service should be called
+        mockedWebService.Verify(ws => ws.NotifyOfFailedLogging(expected));
     }
 }
