@@ -22,7 +22,7 @@ public class StatusController : ControllerBase
         var response = new GetStatusResponse
         {
             Message = "All Good",
-            Contact = "555 555-5555"
+            Contact = contact
         };
         return Ok(response);
     }
@@ -30,6 +30,6 @@ public class StatusController : ControllerBase
 
 public class GetStatusResponse
 {
-    public string Message { get; set; } = string.Empty;
-    public string Contact { get; set; } = string.Empty;
+    public string Message { get; init; } = string.Empty;
+    public string Contact { get; init; } = string.Empty;
 }
