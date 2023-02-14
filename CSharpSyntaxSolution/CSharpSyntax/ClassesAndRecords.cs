@@ -43,7 +43,7 @@ public class ClassesAndRecords
         Assert.Equal("1919", product.Sku);
         Assert.Equal("eggs", product.Description);
 
-        Assert.Equal(11.19M)
+        //Assert.Equal(11.19M);
     }
 
     private Customer GetCustomer()
