@@ -15,10 +15,12 @@ export class AboutComponent {
   constructor(private service: StatusDataService) { }
 
   getStatus() {
+
     this.responseFromServer$ = this.service.getStatus().pipe(
+      tap(() => this.hasError = false),
       catchError(() => {
         this.hasError = true;
-        return of({ message: 'unavailable', contact: 'unavailable' })
+        return of({ message: 'unavailable', contact: '800 555-5555' })
       })
     )
 
