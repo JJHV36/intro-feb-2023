@@ -13,23 +13,15 @@ public class StatusController : ControllerBase
 
     // GET /status
     [HttpGet("/status")]
-    public ActionResult GetTheStatus()
+    public ActionResult<GetStatusResponse> GetTheStatus()
     {
         // look this up from a database or whatever
         // If it is between midnight and 4 PM use a phone number
         // outside of that, use an email address.
         var contact = _systemTime.GetCurrent().Hour < 16 ? "bob@aol.com" : "555 555-5555";
-        var response = new GetStatusResponse
-        {
-            Message = "All Good",
-            Contact = contact
-        };
+        var response = new GetStatusResponse("All Good", contact, "Bob");
         return Ok(response);
     }
 }
 
-public class GetStatusResponse
-{
-    public string Message { get; init; } = string.Empty;
-    public string Contact { get; init; } = string.Empty;
-}
+public record GetStatusResponse(string Message, string Contact, string ContactName);

@@ -36,11 +36,7 @@ public class StatusResourceTests
         }); 
         
         var responseMessage = response.ReadAsJson<GetStatusResponse>();
-        var expectedResponse = new GetStatusResponse
-        {
-            Message = "All Good",
-            Contact = "555-555-5555"
-        };
+        var expectedResponse = new GetStatusResponse("All Good", "555 555-5555", "");
         Assert.NotNull(responseMessage);
         Assert.Equal(expectedResponse, responseMessage);
     }
