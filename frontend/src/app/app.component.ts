@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { selectCounterCurrent } from './state';
 
 
 @Component({
@@ -8,4 +10,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Learning Resources Application';
+
+  current$ = this.store.select(selectCounterCurrent);
+  constructor(private store: Store) { }
 }

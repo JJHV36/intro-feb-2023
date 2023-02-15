@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShoppingListComponent } from './components/shopping-list/shopping-list.component';
-import { ReactiveFormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AboutComponent } from './components/about/about.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -30,11 +30,11 @@ import { CounterPrefsComponent } from './components/counter-prefs/counter-prefs.
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule, //<--- Has a service it provided call the HttpClient
+    HttpClientModule,// -> Has a service it provided call the HttpClient
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument()
   ],
-  providers: [StatusDataService],
+  providers: [StatusDataService], // API -> builder.Services.AddSingleton
   bootstrap: [AppComponent]
 })
 export class AppModule { }
