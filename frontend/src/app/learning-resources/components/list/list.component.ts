@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { selectItemsArray } from '../../state';
 
 @Component({
   selector: 'app-list',
@@ -6,5 +8,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent {
+
+  items$ = this.store.select(selectItemsArray);
+  constructor(private store: Store) { }
 
 }
