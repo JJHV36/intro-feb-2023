@@ -1,5 +1,5 @@
 import { ActionReducerMap, createFeatureSelector, createSelector, select } from "@ngrx/store";
-import * as fromItems from './reducers/item.reducer'
+import * as fromItems from './reducers/items.reducer'
 
 export const featureName = "resources";
 
